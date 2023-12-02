@@ -21,6 +21,9 @@ class Song
     #[ORM\Column]
     private ?int $length = null;
 
+    #[ORM\ManyToOne(inversedBy: 'song')]
+    private ?Album $song = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +49,18 @@ class Song
     public function setLength(int $length): static
     {
         $this->length = $length;
+
+        return $this;
+    }
+
+    public function getSong(): ?Album
+    {
+        return $this->song;
+    }
+
+    public function setSong(?Album $song): static
+    {
+        $this->song = $song;
 
         return $this;
     }
