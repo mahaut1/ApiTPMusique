@@ -24,20 +24,16 @@ class Album
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'album')]
+    #[ORM\ManyToOne(inversedBy: 'albums')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Artiste $artiste = null;
 
-    #[ORM\OneToMany(mappedBy: 'artist', targetEntity: Album::class, orphanRemoval: true)]
-    private Collection $albums;
-
-    #[ORM\OneToMany(mappedBy: 'song', targetEntity: song::class)]
-    private Collection $song;
+    #[ORM\OneToMany(mappedBy: 'album', targetEntity: Song::class)]
+    private Collection $songs;
 
     public function __construct()
     {
-        $this->albums = new ArrayCollection();
-        $this->song = new ArrayCollection();
+        $this->songs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,59 +78,29 @@ class Album
     }
 
     /**
-     * @return Collection<int, Album>
+     * @return Collection<int, Song>
      */
-    public function getAlbums(): Collection
+    public function getSongs(): Collection
     {
-        return $this->albums;
+        return $this->songs;
     }
 
-    public function addAlbum(Album $album): static
+    public function addSong(Song $song): static
     {
-        if (!$this->albums->contains($album)) {
-            $this->albums->add($album);
-            $album->setArtist($this);
+        if (!$this->songs->contains($song)) {
+            $this->songs->add($song);
+            $song->setAlbum($this);
         }
 
         return $this;
     }
 
-    public function removeAlbum(Album $album): static
+    public function removeSong(Song $song): static
     {
-        if ($this->albums->removeElement($album)) {
+        if ($this->songs->removeElement($song)) {
             // set the owning side to null (unless already changed)
-            if ($album->getArtist() === $this) {
-                $album->setArtist(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, song>
-     */
-    public function getSong(): Collection
-    {
-        return $this->song;
-    }
-
-    public function addSong(song $song): static
-    {
-        if (!$this->song->contains($song)) {
-            $this->song->add($song);
-            $song->setSong($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSong(song $song): static
-    {
-        if ($this->song->removeElement($song)) {
-            // set the owning side to null (unless already changed)
-            if ($song->getSong() === $this) {
-                $song->setSong(null);
+            if ($song->getAlbum() === $this) {
+                $song->setAlbum(null);
             }
         }
 

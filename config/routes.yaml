@@ -3,3 +3,11 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+api_artist_album_song:
+    path: '/api/artist/{id}/album/{albumId}/song/{songId}'
+    controller: 'App\Controller\YourController::getSongDetails'
+    methods: ['GET']
+    defaults:
+        _api_resource_class: 'App\Entity\Song'
+        _api_item_operation_name: 'get_song_details'
+

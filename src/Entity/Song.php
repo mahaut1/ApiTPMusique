@@ -1,10 +1,11 @@
 <?php
-
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SongRepository;
 use Doctrine\ORM\Mapping as ORM;
+
+
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
 #[ApiResource]
@@ -20,9 +21,9 @@ class Song
 
     #[ORM\Column]
     private ?int $length = null;
-
-    #[ORM\ManyToOne(inversedBy: 'song')]
-    private ?Album $song = null;
+    
+    #[ORM\ManyToOne(targetEntity: Album::class, inversedBy: 'songs')]
+    private ?Album $album = null;
 
     public function getId(): ?int
     {
@@ -53,14 +54,14 @@ class Song
         return $this;
     }
 
-    public function getSong(): ?Album
+    public function getAlbum(): ?Album
     {
-        return $this->song;
+        return $this->album;
     }
 
-    public function setSong(?Album $song): static
+    public function setAlbum(?Album $album): static
     {
-        $this->song = $song;
+        $this->album = $album;
 
         return $this;
     }
