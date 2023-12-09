@@ -20,10 +20,17 @@ class ArtisteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Artiste::class);
     }
-
-//    /**
-//     * @return Artiste[] Returns an array of Artiste objects
-//     */
+    public function findByStylePartial(string $style): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.style LIKE :style')
+            ->setParameter('style', '%' . $style . '%')
+            ->getQuery()
+            ->getResult();
+    }
+   
+//      @return Artiste[] Returns an array of Artiste objects
+//     
 //    public function findByExampleField($value): array
 //    {
 //        return $this->createQueryBuilder('a')

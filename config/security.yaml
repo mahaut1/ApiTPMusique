@@ -1,0 +1,27 @@
+security:
+    # ...
+    firewalls:
+        read_only:
+            pattern: ^/api/.*  # Routes en lecture seule
+            security: false    # Pas de sécurité pour la lecture
+            stateless: true
+
+        secured_area:
+            pattern: ^/api/write.*  # Routes d'écriture et détails des chansons
+            stateless: true
+            anonymous: false
+            provider: app_user_provider  # Remplacez par votre fournisseur d'utilisateurs
+            guard:
+                authenticators:
+                    - App\Security\ApiAuthenticator  # Votre authentificateur
+          
+             main:
+            pattern: ^/
+            stateless: true
+            guard:
+                authenticators:
+                    - App\Security\ApiAuthenticator
+
+    access_control:
+        - { path: ^/api/write, roles: ROLE_USER }  # Accès autorisé aux utilisateurs authentifiés
+        - { path: ^/api/songs/\d+, roles: ROLE_USER }  # Accès aux détails des chansons

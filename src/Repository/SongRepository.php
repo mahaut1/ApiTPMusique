@@ -20,7 +20,17 @@ class SongRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Song::class);
     }
-
+    
+    public function findSongsByDurationRange(int $minDuration, int $maxDuration): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.length >= :minDuration')
+            ->andWhere('s.length <= :maxDuration')
+            ->setParameter('minDuration', $minDuration)
+            ->setParameter('maxDuration', $maxDuration)
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Song[] Returns an array of Song objects
 //     */

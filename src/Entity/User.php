@@ -38,6 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    
     #[Groups(['user:read'])]
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
@@ -64,7 +65,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
-
+    public function getUsername(): string
+    {
+        // Retourne le champ correspondant à l'identifiant de l'utilisateur (par exemple, l'email)
+        return $this->email;
+    }
     public function getEmail(): ?string
     {
         return $this->email;
