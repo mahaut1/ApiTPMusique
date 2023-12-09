@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
-#[ApiResource]
+#[ApiResource()]
 class Song
 {
     #[ORM\Id]
