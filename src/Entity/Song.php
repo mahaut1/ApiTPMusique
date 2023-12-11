@@ -4,11 +4,29 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SongRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
 #[ApiResource()]
+#[ApiResource(
+    uriTemplate: 'artistes/{artist_id}/albums',
+    uriVariables: [
+        'artiste_id'=> new Link(fromClass: Artiste::class, toProperty:'artiste')
+    ],
+    operations:[new Get(), new Post()]
+)]
+
+#[ApiResource(
+    uriTemplate: 'artistes/{artiste_id}/albums/{album_id}/songs/{song_id}',
+    uriVariables: [
+        'artiste_id'=> new Link(fromClass: Artiste::class, toProperty:'artiste'),
+        'album_id'=> new Link(fromClass: Album::class, toProperty:'album'),
+        'song_id'=> new Link(fromClass: Song::class)
+    ]
+)] 
 class Song
 {
     #[ORM\Id]
