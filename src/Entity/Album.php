@@ -8,9 +8,26 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
 #[ApiResource()]
+ #[ApiResource(
+    uriTemplate: 'artistes/{artist_id}/albums',
+    uriVariables: [
+        'artiste_id'=> new Link(fromClass: Artiste::class, toProperty:'artiste')
+    ],
+    operations:[new Get(), new Post()]
+)]
+#[ApiResource(
+    uriTemplate: 'artistes/{artiste_id}/albums/{album_id}',
+    uriVariables: [
+        'artiste_id'=> new Link(fromClass: Artiste::class, toProperty:'artiste'),
+        'album_id'=> new Link(fromClass: Album::class)
+    ]
+)] 
 class Album
 {
     #[ORM\Id]
